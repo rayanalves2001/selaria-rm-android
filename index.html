@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#3b261b">
+<meta name="description" content="Gestão privada da Selaria RM">
+<link rel="manifest" href="manifest.json">
+<title>Selaria RM</title>
+<style>
+:root{--bg:#f3eee6;--card:#fffdf9;--ink:#2e2119;--muted:#79685a;--brown:#4a2d1d;--brown2:#6b432b;--line:#dfd2c3;--green:#486344;--red:#9b3e2e;--gold:#bd8b45}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,Segoe UI,sans-serif}
+header{background:linear-gradient(135deg,#2e1d14,#5b3925);color:#fff;padding:22px 16px 18px}
+.head{max-width:980px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;gap:12px;align-items:center}.mark{border:2px solid #d8b783;border-radius:50%;width:50px;height:50px;display:grid;place-items:center;font-weight:900;color:#f2d8ae;font-size:19px}
+h1{font-size:22px;margin:0;letter-spacing:.5px}header p{margin:3px 0 0;color:#e3d0ba;font-size:12px}
+main{max-width:980px;margin:0 auto;padding:16px}
+nav{display:flex;gap:8px;overflow:auto;padding:2px 0 14px}
+nav button{white-space:nowrap;border:1px solid var(--line);background:#e8ddcf;color:var(--brown);border-radius:999px;padding:10px 14px;font-weight:700}
+nav button.active{background:var(--brown);color:#fff;border-color:var(--brown)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media(min-width:700px){.grid.stats{grid-template-columns:repeat(4,minmax(0,1fr))}.cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}}
+.stat,.card{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:15px;box-shadow:0 3px 12px #40210c0a}
+.stat small{display:block;color:var(--muted);font-size:12px}.stat strong{display:block;font-size:23px;margin-top:4px}
+h2{font-size:18px;margin:20px 0 10px}h3{font-size:15px;margin:0 0 10px}
+form{display:grid;gap:10px}label{display:grid;gap:5px;font-size:12px;font-weight:700;color:var(--muted)}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid #d7c7b5;border-radius:10px;background:#fffefa;color:var(--ink);font:inherit;min-width:0}
+textarea{min-height:74px;resize:vertical}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{border:0;border-radius:10px;padding:11px 14px;background:var(--brown);color:#fff;font-weight:750;cursor:pointer}
+.btn.secondary{background:#e8ddcf;color:var(--brown)}.btn.green{background:var(--green)}.btn.red{background:#f5e3df;color:var(--red)}.btn.small{padding:7px 9px;font-size:12px}
+.actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.list{display:grid;gap:10px;margin-top:12px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:13px}
+.itemtop{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.item strong{display:block}.muted{color:var(--muted);font-size:12px}.money{font-weight:800;white-space:nowrap}
+.tag{display:inline-block;padding:3px 8px;border-radius:99px;background:#eee2d2;color:#68472c;font-size:11px;font-weight:800;margin-top:5px}.tag.red{background:#f5e3df;color:#923b2d}.tag.green{background:#e3ebdf;color:#3d5b37}
+.hidden{display:none!important}.empty{padding:20px;text-align:center;color:var(--muted);background:#fffaf3;border:1px dashed var(--line);border-radius:12px}
+hr{border:0;border-top:1px solid var(--line);margin:13px 0}
+.notice{background:#f8eddb;border-left:4px solid var(--gold);padding:11px 12px;border-radius:8px;font-size:12px;color:#624729;margin:12px 0}
+footer{text-align:center;color:var(--muted);font-size:11px;padding:25px 12px}
+dialog{border:1px solid var(--line);border-radius:16px;width:min(94vw,480px);padding:20px;background:var(--card);color:var(--ink);box-shadow:0 20px 80px #0004}
+dialog::backdrop{background:#1f140dbb}
+.pill{font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header><div class="head"><div class="brand"><div class="mark">RM</div><div><h1>SELARIA RM</h1><p>Gestão de encomendas e clientes</p></div></div><button id="lockBtn" class="btn secondary small">Bloquear</button></div></header>
+<main>
+<div id="app">
+<nav id="nav">
+<button class="active" data-tab="inicio">Resumo</button><button data-tab="pedidos">Encomendas</button><button data-tab="clientes">Clientes</button><button data-tab="produtos">Produtos</button><button data-tab="dados">Backup e acesso</button>
+</nav>
+<section id="tab-inicio">
+<div class="grid stats">
+<div class="stat"><small>Encomendas abertas</small><strong id="statOpen">0</strong></div>
+<div class="stat"><small>Entregas atrasadas</small><strong id="statLate">0</strong></div>
+<div class="stat"><small>Saldo a receber</small><strong id="statBalance">R$ 0,00</strong></div>
+<div class="stat"><small>Clientes cadastrados</small><strong id="statClients">0</strong></div>
+</div>
+<h2>Próximas entregas</h2><div id="upcoming" class="list"></div>
+<div class="notice">Os dados ficam salvos neste navegador/aparelho. Faça backups frequentes. O PIN é apenas um bloqueio básico da tela, não uma proteção forte contra acesso técnico ao aparelho.</div>
+</section>
+<section id="tab-pedidos" class="hidden">
+<div class="cols"><div class="card"><h3 id="orderFormTitle">Nova encomenda</h3>
+<form id="orderForm">
+<input type="hidden" id="orderId">
+<label>Cliente<select id="orderClient" required></select></label>
+<label>Produto ou serviço<select id="orderProduct" required></select></label>
+<div class="row2"><label>Quantidade<input id="orderQty" type="number" min="1" value="1" required></label><label>Valor total (R$)<input id="orderTotal" type="number" min="0" step=".01" required></label></div>
+<div class="row2"><label>Data de entrega<input id="orderDue" type="date"></label><label>Situação<select id="orderStatus"><option>Em andamento</option><option>Aguardando material</option><option>Pronto para entrega</option><option>Entregue</option><option>Cancelado</option></select></label></div>
+<label>Detalhes / medidas / observações<textarea id="orderNotes"></textarea></label>
+<div class="actions"><button class="btn" type="submit">Salvar encomenda</button><button class="btn secondary hidden" id="cancelOrderEdit" type="button">Cancelar edição</button></div>
+</form></div>
+<div class="card"><h3>Registrar pagamento</h3><form id="paymentForm">
+<label>Encomenda<select id="paymentOrder" required></select></label>
+<div class="row2"><label>Valor recebido (R$)<input id="paymentAmount" type="number" min=".01" step=".01" required></label><label>Data<input id="paymentDate" type="date" required></label></div>
+<label>Forma de pagamento<select id="paymentMethod"><option>Pix</option><option>Dinheiro</option><option>Cartão</option><option>Transferência</option><option>Outro</option></select></label>
+<label>Observação<input id="paymentNote" placeholder="Ex.: entrada, segunda parcela"></label>
+<button class="btn green" type="submit">Registrar pagamento</button>
+</form><p class="muted">Cada recebimento fica no histórico da encomenda. O saldo é calculado automaticamente.</p></div></div>
+<h2>Encomendas cadastradas</h2><div id="ordersList" class="list"></div>
+</section>
+<section id="tab-clientes" class="hidden">
+<div class="card"><h3 id="clientFormTitle">Cadastrar cliente</h3><form id="clientForm">
+<input type="hidden" id="clientId">
+<div class="row2"><label>Nome completo<input id="clientName" required></label><label>Telefone / WhatsApp<input id="clientPhone" inputmode="tel" placeholder="DDD + número"></label></div>
+<label>Medidas e observações<textarea id="clientNotes"></textarea></label>
+<div class="actions"><button class="btn" type="submit">Salvar cliente</button><button class="btn secondary hidden" id="cancelClientEdit" type="button">Cancelar edição</button></div>
+</form></div><div id="clientsList" class="list"></div>
+</section>
+<section id="tab-produtos" class="hidden">
+<div class="card"><h3 id="productFormTitle">Cadastrar produto ou serviço</h3><form id="productForm">
+<input type="hidden" id="productId">
+<div class="row2"><label>Nome<input id="productName" required placeholder="Ex.: arreio banana simples"></label><label>Categoria<select id="productCategory"><option>Arreios</option><option>Traias</option><option>Bainhas</option><option>Cintos</option><option>Botas e calças</option><option>Consertos</option><option>Outros</option></select></label></div>
+<div class="row2"><label>Preço padrão (R$)<input id="productPrice" type="number" min="0" step=".01" value="0"></label><label>Custo estimado (R$)<input id="productCost" type="number" min="0" step=".01" value="0"></label></div>
+<div class="actions"><button class="btn" type="submit">Salvar produto</button><button class="btn secondary hidden" id="cancelProductEdit" type="button">Cancelar edição</button></div>
+</form></div><div id="productsList" class="list"></div>
+</section>
+<section id="tab-dados" class="hidden">
+<div class="card"><h3>Backup dos dados</h3><p>Exporte um arquivo JSON e guarde em local seguro. Para recuperar, importe o arquivo de backup. A importação substitui os dados atuais.</p><div class="actions"><button class="btn" id="exportBtn">Exportar backup</button><label class="btn secondary" style="display:inline-flex;align-items:center;cursor:pointer">Importar backup<input id="importFile" type="file" accept=".json,application/json" hidden></label></div>
+<hr><h3>Bloqueio por PIN</h3><p class="muted">Defina um PIN de 4 a 8 números para bloquear a tela quando terminar de usar. Este recurso não criptografa os dados salvos.</p>
+<form id="pinForm"><label>Novo PIN (4–8 números)<input id="pinNew" inputmode="numeric" pattern="[0-9]{4,8}" minlength="4" maxlength="8" placeholder="Deixe vazio para remover"></label><label>Confirmar PIN<input id="pinConfirm" inputmode="numeric" maxlength="8"></label><button class="btn" type="submit">Salvar PIN</button></form>
+<hr><button class="btn red" id="clearBtn">Apagar todos os dados deste aparelho</button></div>
+<div class="notice">Recomendação: não use este protótipo como único registro financeiro. Guarde cópias de backup fora do celular e proteja o aparelho com senha.</div>
+</section>
+</div>
+</main>
+<footer>Selaria RM · Protótipo de gestão privada · versão 2</footer>
+<dialog id="pinDialog"><h2 id="pinDialogTitle">Acesso à Selaria RM</h2><p id="pinDialogText">Digite seu PIN para continuar.</p><form id="unlockForm"><label>PIN<input id="pinInput" inputmode="numeric" maxlength="8" required></label><div class="actions"><button class="btn" type="submit">Desbloquear</button></div></form></dialog>
+<script>
+const $=id=>document.getElementById(id);
+const money=n=>(Number(n)||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const today=()=>new Date().toISOString().slice(0,10);
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+let db={clients:[],products:[],orders:[],payments:[],settings:{}};
+function load(){
+ try{const raw=JSON.parse(localStorage.getItem('selariaRM_v2')||'null');if(raw&&typeof raw==='object'){db={...db,...raw};}}
+ catch(e){alert('Não foi possível ler os dados salvos. Tente importar seu backup.')}
+ // Migração simples do protótipo anterior
+ try{const old=JSON.parse(localStorage.getItem('selariaRM')||'null');if(old&&!localStorage.getItem('selariaRM_v2')){db.clients=old.clients||[];db.products=old.products||[];db.orders=(old.orders||[]).map(o=>({...o,id:o.id||uid()}));db.payments=[];db.orders.forEach(o=>{const paid=Number(o.paid)||0;if(paid>0)db.payments.push({id:uid(),orderId:o.id,amount:paid,date:today(),method:'Registro migrado',note:'Pagamento anterior migrado do protótipo'});});save();}}
+ catch(e){}
+ db.clients=db.clients||[];db.products=db.products||[];db.orders=db.orders||[];db.payments=db.payments||[];db.settings=db.settings||{};
+}
+function save(){localStorage.setItem('selariaRM_v2',JSON.stringify(db));}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function paidFor(orderId){return db.payments.filter(p=>p.orderId===orderId).reduce((a,p)=>a+Number(p.amount||0),0)}
+function balance(o){return Math.max(0,Number(o.total||0)-paidFor(o.id))}
+function clientName(id){return db.clients.find(c=>c.id===id)?.name||'Cliente removido'}
+function productName(id){return db.products.find(p=>p.id===id)?.name||'Produto removido'}
+function tab(name){document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===name));document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));$('tab-'+name).classList.remove('hidden');}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>tab(b.dataset.tab));
+function fillSelect(id,items,placeholder){const el=$(id),old=el.value;el.innerHTML=`<option value="">${placeholder}</option>`+items.map(x=>`<option value="${esc(x.id)}">${esc(x.name)}</option>`).join('');if(items.some(x=>x.id===old))el.value=old;}
+function render(){
+ fillSelect('orderClient',db.clients,'Selecione o cliente');fillSelect('orderProduct',db.products,'Selecione o produto/serviço');
+ fillSelect('paymentOrder',db.orders.filter(o=>!['Entregue','Cancelado'].includes(o.status)&&balance(o)>0).map(o=>({id:o.id,name:clientName(o.clientId)+' — '+productName(o.productId)+' ('+money(balance(o))+')'})),'Selecione a encomenda');
+ const open=db.orders.filter(o=>!['Entregue','Cancelado'].includes(o.status));
+ $('statOpen').textContent=open.length;
+ $('statLate').textContent=open.filter(o=>o.due&&o.due<today()).length;
+ $('statBalance').textContent=money(db.orders.reduce((s,o)=>s+balance(o),0));
+ $('statClients').textContent=db.clients.length;
+ const upcoming=[...open].filter(o=>o.due).sort((a,b)=>a.due.localeCompare(b.due)).slice(0,5);
+ $('upcoming').innerHTML=upcoming.length?upcoming.map(o=>`<div class="item"><div class="itemtop"><div><strong>${esc(clientName(o.clientId))}</strong><div>${esc(productName(o.productId))}</div><span class="tag ${o.due<today()?'red':''}">${o.due<today()?'Atrasado':'Entrega: '+o.due}</span></div><div class="money">${money(balance(o))}<div class="muted">saldo</div></div></div></div>`).join(''):'<div class="empty">Nenhuma entrega com data prevista cadastrada.</div>';
+ $('ordersList').innerHTML=db.orders.length?[...db.orders].sort((a,b)=>(b.created||'').localeCompare(a.created||'')).map(o=>{
+ const pay=db.payments.filter(p=>p.orderId===o.id).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+ const late=o.due&&o.due<today()&&!['Entregue','Cancelado'].includes(o.status);
+ return `<div class="item"><div class="itemtop"><div><strong>${esc(clientName(o.clientId))} · ${esc(productName(o.productId))}</strong><div class="muted">${o.due?'Entrega: '+esc(o.due):'Sem data de entrega'} · Qtd: ${Number(o.qty)||1}</div><span class="tag ${late?'red':o.status==='Entregue'?'green':''}">${esc(o.status||'Em andamento')}${late?' · ATRASADO':''}</span></div><div class="money">${money(o.total)}<div class="muted">total</div></div></div>
+ <div class="row2" style="margin-top:10px"><div><span class="muted">Recebido</span><br><b>${money(paidFor(o.id))}</b></div><div><span class="muted">Saldo</span><br><b>${money(balance(o))}</b></div></div>
+ ${o.notes?`<p class="muted">${esc(o.notes)}</p>`:''}
+ <details><summary class="pill">Histórico de pagamentos (${pay.length})</summary>${pay.length?pay.map(p=>`<div class="muted" style="margin-top:7px">${esc(p.date||'')} · ${esc(p.method||'')} · <b>${money(p.amount)}</b>${p.note?' — '+esc(p.note):''} <button class="btn red small" onclick="deletePayment('${p.id}')">Excluir</button></div>`).join(''):'<p class="muted">Nenhum pagamento registrado.</p>'}</details>
+ <div class="actions"><button class="btn secondary small" onclick="editOrder('${o.id}')">Editar</button><button class="btn green small" onclick="quickPayment('${o.id}')">Adicionar pagamento</button><button class="btn secondary small" onclick="whatsappOrder('${o.id}')">WhatsApp</button><button class="btn red small" onclick="deleteOrder('${o.id}')">Excluir</button></div></div>`;
+ }).join(''):'<div class="empty">Nenhuma encomenda cadastrada ainda.</div>';
+ $('clientsList').innerHTML=db.clients.length?db.clients.map(c=>`<div class="item"><div class="itemtop"><div><strong>${esc(c.name)}</strong><div class="muted">${esc(c.phone||'Sem telefone')}</div>${c.notes?`<p class="muted">${esc(c.notes)}</p>`:''}</div><span class="tag">${db.orders.filter(o=>o.clientId===c.id).length} encomenda(s)</span></div><div class="actions"><button class="btn secondary small" onclick="editClient('${c.id}')">Editar</button><button class="btn red small" onclick="deleteClient('${c.id}')">Excluir</button></div></div>`).join(''):'<div class="empty">Nenhum cliente cadastrado.</div>';
+ $('productsList').innerHTML=db.products.length?db.products.map(p=>`<div class="item"><div class="itemtop"><div><strong>${esc(p.name)}</strong><div class="muted">${esc(p.category||'Outros')} · Custo estimado: ${money(p.cost)}</div></div><div class="money">${money(p.price)}</div></div><div class="actions"><button class="btn secondary small" onclick="editProduct('${p.id}')">Editar</button><button class="btn red small" onclick="deleteProduct('${p.id}')">Excluir</button></div></div>`).join(''):'<div class="empty">Nenhum produto cadastrado.</div>';
+}
+$('clientForm').onsubmit=e=>{e.preventDefault();const id=$('clientId').value||uid();const item={id,name:$('clientName').value.trim(),phone:$('clientPhone').value.trim(),notes:$('clientNotes').value.trim()};const i=db.clients.findIndex(x=>x.id===id);i>=0?db.clients[i]=item:db.clients.push(item);save();e.target.reset();$('clientId').value='';$('clientFormTitle').textContent='Cadastrar cliente';$('cancelClientEdit').classList.add('hidden');render();};
+window.editClient=id=>{const c=db.clients.find(x=>x.id===id);if(!c)return;$('clientId').value=c.id;$('clientName').value=c.name;$('clientPhone').value=c.phone||'';$('clientNotes').value=c.notes||'';$('clientFormTitle').textContent='Editar cliente';$('cancelClientEdit').classList.remove('hidden');tab('clientes');window.scrollTo(0,0)};
+$('cancelClientEdit').onclick=()=>{$('clientForm').reset();$('clientId').value='';$('clientFormTitle').textContent='Cadastrar cliente';$('cancelClientEdit').classList.add('hidden')};
+window.deleteClient=id=>{if(db.orders.some(o=>o.clientId===id)){alert('Este cliente possui encomendas. Edite ou remova as encomendas antes de excluir.');return}if(confirm('Excluir este cliente?')){db.clients=db.clients.filter(c=>c.id!==id);save();render()}};
+$('productForm').onsubmit=e=>{e.preventDefault();const id=$('productId').value||uid();const item={id,name:$('productName').value.trim(),category:$('productCategory').value,price:Number($('productPrice').value)||0,cost:Number($('productCost').value)||0};const i=db.products.findIndex(x=>x.id===id);i>=0?db.products[i]=item:db.products.push(item);save();e.target.reset();$('productId').value='';$('productPrice').value='0';$('productCost').value='0';$('productFormTitle').textContent='Cadastrar produto ou serviço';$('cancelProductEdit').classList.add('hidden');render();};
+window.editProduct=id=>{const p=db.products.find(x=>x.id===id);if(!p)return;$('productId').value=p.id;$('productName').value=p.name;$('productCategory').value=p.category||'Outros';$('productPrice').value=p.price||0;$('productCost').value=p.cost||0;$('productFormTitle').textContent='Editar produto ou serviço';$('cancelProductEdit').classList.remove('hidden');tab('produtos');window.scrollTo(0,0)};
+$('cancelProductEdit').onclick=()=>{$('productForm').reset();$('productId').value='';$('productPrice').value='0';$('productCost').value='0';$('productFormTitle').textContent='Cadastrar produto ou serviço';$('cancelProductEdit').classList.add('hidden')};
+window.deleteProduct=id=>{if(db.orders.some(o=>o.productId===id)){alert('Este produto está vinculado a encomendas. Não é possível excluir agora.');return}if(confirm('Excluir este produto?')){db.products=db.products.filter(p=>p.id!==id);save();render()}};
+$('orderProduct').onchange=()=>{const p=db.products.find(x=>x.id===$('orderProduct').value);if(p&&!$('orderId').value)$('orderTotal').value=(p.price*(Number($('orderQty').value)||1)).toFixed(2)};
+$('orderQty').onchange=()=>{const p=db.products.find(x=>x.id===$('orderProduct').value);if(p&&!$('orderId').value)$('orderTotal').value=(p.price*(Number($('orderQty').value)||1)).toFixed(2)};
+$('orderForm').onsubmit=e=>{e.preventDefault();const id=$('orderId').value||uid();const old=db.orders.find(o=>o.id===id);const o={id,clientId:$('orderClient').value,productId:$('orderProduct').value,qty:Number($('orderQty').value)||1,total:Number($('orderTotal').value)||0,due:$('orderDue').value,status:$('orderStatus').value,notes:$('orderNotes').value.trim(),created:old?.created||new Date().toISOString()};const i=db.orders.findIndex(x=>x.id===id);i>=0?db.orders[i]=o:db.orders.push(o);save();resetOrderForm();render();};
+function resetOrderForm(){$('orderForm').reset();$('orderId').value='';$('orderQty').value='1';$('orderTotal').value='';$('orderStatus').value='Em andamento';$('orderFormTitle').textContent='Nova encomenda';$('cancelOrderEdit').classList.add('hidden')}
+$('cancelOrderEdit').onclick=resetOrderForm;
+window.editOrder=id=>{const o=db.orders.find(x=>x.id===id);if(!o)return;$('orderId').value=o.id;$('orderClient').value=o.clientId;$('orderProduct').value=o.productId;$('orderQty').value=o.qty||1;$('orderTotal').value=o.total;$('orderDue').value=o.due||'';$('orderStatus').value=o.status||'Em andamento';$('orderNotes').value=o.notes||'';$('orderFormTitle').textContent='Editar encomenda';$('cancelOrderEdit').classList.remove('hidden');tab('pedidos');window.scrollTo(0,0)};
+window.deleteOrder=id=>{if(confirm('Excluir a encomenda e todo o histórico de pagamentos dela?')){db.orders=db.orders.filter(o=>o.id!==id);db.payments=db.payments.filter(p=>p.orderId!==id);save();render()}};
+$('paymentDate').value=today();
+$('paymentForm').onsubmit=e=>{e.preventDefault();const orderId=$('paymentOrder').value,amount=Number($('paymentAmount').value);if(!orderId||amount<=0)return;const o=db.orders.find(x=>x.id===orderId);if(!o)return;if(amount>balance(o)+0.005&&!confirm('O valor é maior que o saldo devedor. Registrar mesmo assim?'))return;db.payments.push({id:uid(),orderId,amount,date:$('paymentDate').value||today(),method:$('paymentMethod').value,note:$('paymentNote').value.trim()});save();e.target.reset();$('paymentDate').value=today();render();};
+window.quickPayment=id=>{const o=db.orders.find(x=>x.id===id);if(!o)return;$('paymentOrder').value=id;$('paymentAmount').value=balance(o).toFixed(2);$('paymentDate').value=today();tab('pedidos');$('paymentAmount').focus();window.scrollTo(0,0)};
+window.deletePayment=id=>{if(confirm('Excluir este registro de pagamento?')){db.payments=db.payments.filter(p=>p.id!==id);save();render()}};
+window.whatsappOrder=id=>{const o=db.orders.find(x=>x.id===id),c=db.clients.find(x=>x.id===o?.clientId);if(!o||!c?.phone){alert('Cadastre o telefone/WhatsApp do cliente.');return}let phone=c.phone.replace(/\D/g,'');if(phone.length===11||phone.length===10)phone='55'+phone;const msg=`Olá, ${c.name}! Aqui é da Selaria RM.\\nEncomenda: ${productName(o.productId)}\\nValor total: ${money(o.total)}\\nRecebido: ${money(paidFor(o.id))}\\nSaldo: ${money(balance(o))}\\nSituação: ${o.status||'Em andamento'}${o.due?'\\nEntrega prevista: '+o.due:''}`;window.open('https://wa.me/'+phone+'?text='+encodeURIComponent(msg),'_blank')};
+$('exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify({...db,exportedAt:new Date().toISOString(),app:'Selaria RM v2'},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='backup-selaria-rm-'+today()+'.json';a.click();URL.revokeObjectURL(a.href)};
+$('importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const x=JSON.parse(await f.text());if(!x||!Array.isArray(x.clients)||!Array.isArray(x.orders)||!Array.isArray(x.products))throw Error('Arquivo incompatível');if(!confirm('Importar este backup vai substituir os dados atuais. Continuar?'))return;db={clients:x.clients,products:x.products,orders:x.orders,payments:Array.isArray(x.payments)?x.payments:[],settings:x.settings||{}};save();render();alert('Backup importado.')}catch(err){alert('Não foi possível importar. Verifique se selecionou um backup válido da Selaria RM.')}e.target.value=''};
+$('pinForm').onsubmit=async e=>{e.preventDefault();const p=$('pinNew').value,c=$('pinConfirm').value;if(!p){if(!confirm('Remover o PIN de bloqueio?'))return;delete db.settings.pinHash;save();alert('PIN removido.');e.target.reset();return}if(!/^\d{4,8}$/.test(p)){alert('Use de 4 a 8 números.');return}if(p!==c){alert('Os PINs não conferem.');return}db.settings.pinHash=await hashPin(p);save();e.target.reset();alert('PIN salvo. Lembre-se: é apenas bloqueio básico da tela.');};
+async function hashPin(p){if(crypto?.subtle){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('SelariaRM:'+p));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('')}return 'plain:'+p}
+$('lockBtn').onclick=()=>{if(db.settings.pinHash){locked=true;showPin('Digite seu PIN para desbloquear.')}else alert('Configure um PIN na aba “Backup e acesso” primeiro.')};
+let locked=false;
+function showPin(text){$('pinDialogText').textContent=text;$('pinDialog').showModal();$('pinInput').value='';}
+$('unlockForm').onsubmit=async e=>{e.preventDefault();const p=$('pinInput').value,hash=await hashPin(p);if(hash===db.settings.pinHash||'plain:'+p===db.settings.pinHash){$('pinDialog').close();locked=false}else{alert('PIN incorreto.');$('pinInput').value=''}};
+$('clearBtn').onclick=()=>{if(confirm('ATENÇÃO: apagar todos os clientes, produtos, encomendas e pagamentos deste aparelho?')){if(confirm('Confirme novamente. Esta ação não pode ser desfeita sem backup.')){db={clients:[],products:[],orders:[],payments:[],settings:{}};save();render();alert('Dados apagados.')}}};
+load();render();
+if(db.settings.pinHash){locked=true;showPin('Digite seu PIN para abrir a gestão da Selaria RM.')}
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body></html>

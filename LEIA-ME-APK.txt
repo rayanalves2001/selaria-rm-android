@@ -1,0 +1,28 @@
+SELARIA RM — PACOTE PARA GERAR APK NA NUVEM
+
+Este ZIP é um projeto preparado para tentar compilar o protótipo Selaria RM em um APK Android usando GitHub Actions gratuitamente. O APK gerado será de depuração (debug), apropriado para instalação e testes pessoais; não é um lançamento assinado para a Play Store.
+
+IMPORTANTE
+- O build é executado por serviços de terceiros (GitHub Actions); é preciso ter uma conta GitHub.
+- Não carregue dados reais de clientes neste repositório. O projeto contém o código do app, não os dados locais do seu celular.
+- O PIN do protótipo é apenas um bloqueio visual e não criptografa os dados.
+- O APK de debug pode exibir avisos de instalação do Android.
+- Não posso garantir que o build passará sem ajustes até a execução real da compilação.
+
+PASSO A PASSO NO CELULAR ANDROID
+1. Baixe e extraia este ZIP usando o app Arquivos do celular.
+2. No navegador, entre em https://github.com e crie uma conta ou entre na sua conta.
+3. Crie um repositório novo chamado selaria-rm-android. Se aparecer opção de público/privado, prefira PRIVADO.
+4. Envie os arquivos e pastas deste ZIP para a raiz do repositório, preservando a estrutura:
+   - package.json
+   - capacitor.config.json
+   - pasta www
+   - pasta .github/workflows/build-apk.yml
+   Dica: a pasta .github pode ficar oculta no seletor de arquivos; se não conseguir enviá-la pelo celular, use a opção de criar arquivo no GitHub e crie o caminho .github/workflows/build-apk.yml, colando o conteúdo do arquivo local.
+5. Abra a aba Actions do repositório. Se pedir, habilite GitHub Actions.
+6. Selecione “Gerar APK Selaria RM” e toque em Run workflow. Também pode iniciar automaticamente após enviar arquivos para a branch main.
+7. Aguarde o workflow terminar com sucesso. Abra a execução concluída e, em Artifacts, baixe “Selaria-RM-APK”.
+8. Extraia o ZIP do artifact baixado; dentro estará app-debug.apk. Toque nele para instalar e autorize temporariamente o navegador/gerenciador de arquivos a instalar apps desconhecidos, se o Android pedir.
+9. Guarde o APK e faça backup dos dados do app regularmente.
+
+Se a compilação falhar, abra o registro da execução e copie a mensagem de erro para receber ajuda.

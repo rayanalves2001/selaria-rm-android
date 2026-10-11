@@ -1,0 +1,16 @@
+{
+  "name": "selaria-rm-android",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Aplicativo Android da Selaria RM empacotado com Capacitor",
+  "scripts": {
+    "build": "echo 'Arquivos web já estão em www/'"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.2.1",
+    "@capacitor/core": "^6.2.1"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.2.1"
+  }
+}

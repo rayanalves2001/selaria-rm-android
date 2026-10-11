@@ -1,0 +1,6 @@
+{
+  "appId": "br.com.selariarm.gestao",
+  "appName": "Selaria RM",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}
